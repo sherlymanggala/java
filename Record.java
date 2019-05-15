@@ -231,21 +231,69 @@ public class Record {
 			reportSb.append("----query name " + tempName + "----");
 			reportSb.append(System.getProperty("line.separator"));
 			
-			System.out.println(donator.size());
-			
 			for(int i = 0; i < donator.size(); i++) {
-				System.out.println(donator.get(i).getName());
 				if(donator.get(i).getName().equalsIgnoreCase(tempName)) {
 					count++;
 				}
 			}
 			
-			System.out.println(tempName);
-			System.out.println(count);
-			
 			if(count >= 1) {
 				reportSb.append(count + " record(s) found:");
 				reportSb.append(System.getProperty("line.separator"));
+				
+				if (count == 1) {
+					for(int i = 0; i < donator.size(); i++) {
+						if(donator.get(i).getName().equalsIgnoreCase(tempName)) {
+							reportSb.append(donator.get(i).toString());
+							reportSb.append(System.getProperty("line.separator"));
+							reportSb.append("-------------------------");
+						}
+					}
+				}
+				else {
+					// compare birthday
+					for(int i = 0; i < donator.size(); i++) {
+						for(int j = i+1; j < donator.size(); j++) {
+							if(donator.get(i).getName().equalsIgnoreCase(tempName)) {
+								if(donator.get(j).getName().equalsIgnoreCase(tempName)) {
+									String[] tempBoD1 = donator.get(i).getBirthday().toString().split("-");
+									String[] tempBoD2 = donator.get(j).getBirthday().toString().split("-");
+									
+									if(tempBoD1.length == 3 && tempBoD2.length == 3) {
+										
+										// compare birth year
+										if(Integer.parseInt(tempBoD1[2]) < Integer.parseInt(tempBoD2[2])) {
+											donator.add(i, donator.get(j));
+											donator.remove(j+1);
+										}
+										else if (Integer.parseInt(tempBoD1[2]) == Integer.parseInt(tempBoD2[2])) {
+											if(Integer.parseInt(tempBoD1[1]) < Integer.parseInt(tempBoD2[1])) {
+												donator.add(i, donator.get(j));
+												donator.remove(j+1);
+											}
+											else if (Integer.parseInt(tempBoD1[1]) == Integer.parseInt(tempBoD2[1])) {
+												if(Integer.parseInt(tempBoD1[0]) < Integer.parseInt(tempBoD2[0])) {
+													donator.add(i, donator.get(j));
+													donator.remove(j+1);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					for(int i = 0; i < donator.size(); i++) {
+						if(donator.get(i).getName().equalsIgnoreCase(tempName)) {
+							reportSb.append(donator.get(i).toString());
+							reportSb.append(System.getProperty("line.separator"));
+							reportSb.append(System.getProperty("line.separator"));
+						}
+					}
+					
+					reportSb.append("-------------------------");
+				}
 			}
 		}
 		
