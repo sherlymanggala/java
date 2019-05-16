@@ -168,10 +168,9 @@ public class Record {
 										donation += tempDonation;
 										donationList[k] = Integer.toString(donation);
 										foundRecipient = true;
-										break;
-									}
-									else {
-										foundRecipient = false;
+										
+										System.out.println(tempDonation);
+										System.out.println(donation + "\n");
 									}
 								}
 								
@@ -179,15 +178,19 @@ public class Record {
 								donationStr = donationStr + donationList[0];
 								for(int k = 1; k < recipientList.length; k++) {
 									recipientStr = recipientStr + ", " + recipientList[k];
-									donationStr = donationStr + ", " + donationList[k];
+									donationStr = donationStr + ", " + donationList[k].trim();
+									System.out.println(donationStr);
 								}
 								
 								// if there's no same recipient as given, add new recipient into the list
 								if(!foundRecipient) {
 									recipientStr = recipientStr + ", " + tempRecipient;
 									donationStr = donationStr + ", " + Integer.toString(tempDonation);
-									count++;
 								}
+								
+								count++;
+								donator.get(j).setRecipient(recipientStr);
+								donator.get(j).setDonation(donationStr);
 							}
 							else {
 								count++;
