@@ -177,7 +177,7 @@ public class Record {
 								recipientStr = recipientStr + recipientList[0];
 								donationStr = donationStr + donationList[0];
 								for(int k = 1; k < recipientList.length; k++) {
-									recipientStr = recipientStr + ", " + recipientList[k];
+									recipientStr = recipientStr + ", " + recipientList[k].trim();
 									donationStr = donationStr + ", " + donationList[k].trim();
 									System.out.println(donationStr);
 								}
@@ -294,13 +294,15 @@ public class Record {
 					
 					for(int i = 0; i < donator.size(); i++) {
 						if(donator.get(i).getName().equalsIgnoreCase(tempName)) {
-							if (i == count) {
-								reportSb.append(System.getProperty("line.separator"));
-								reportSb.append(System.getProperty("line.separator"));
+							if(count > 1) {
 								reportSb.append(donator.get(i).toString());
+								reportSb.append(System.getProperty("line.separator"));
+								reportSb.append(System.getProperty("line.separator"));
+								count--;
 							}
-							else {
+							else if (count == 1) {
 								reportSb.append(donator.get(i).toString());
+								reportSb.append(System.getProperty("line.separator"));
 							}
 						}
 					}
