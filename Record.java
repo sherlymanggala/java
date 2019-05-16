@@ -298,7 +298,85 @@ public class Record {
 		}
 		
 		else if (temp[1].equalsIgnoreCase("top")) {
+			int n = Integer.parseInt(temp[2]);
+			String[][] queryTop = new String[donator.size()][2];
+			int[] queryTopDonation = new int[donator.size()];
 			
+			for(int i = 0; i < donator.size(); i++) {
+				queryTop[i][0] = donator.get(i).getName();
+				queryTop[i][1] = donator.get(i).getBirthday().toString();
+				
+				if(donator.get(i).getDonation() != null) {
+					String[] tempDonation = donator.get(i).getDonation().split(",");
+					
+					if(tempDonation.length == 1) {
+						queryTopDonation[i] = Integer.parseInt(tempDonation[0].trim());
+					}
+					
+					else {
+						for(int j = 0; j < tempDonation.length; j++) {
+							queryTopDonation[i] += Integer.parseInt(tempDonation[j].trim());
+						}
+					}
+				}
+			}
+			
+			// Do Bubble Sort (Descending order)
+			for(int i = 0; i < donator.size() - 1; i++) {
+				//System.out.println(queryTop[i][0] + "; " + queryTop[i][1] + "; " + queryTopDonation[i]);
+				for(int j = 0; j < donator.size() - i - 1; j++) {
+					if(queryTopDonation[j] < queryTopDonation[j+1]) {
+						int tempSwapDonation = queryTopDonation[j];
+						queryTopDonation[j] = queryTopDonation[j+1];
+						queryTopDonation[j+1] = tempSwapDonation;
+						
+						String tempSwapName = queryTop[j][0];
+						queryTop[j][0] = queryTop[j+1][0];
+						queryTop[j+1][0] = tempSwapName;
+						
+						String tempSwapBirthday = queryTop[j][1];
+						queryTop[j][1] = queryTop[j+1][1];
+						queryTop[j+1][1] = tempSwapBirthday;
+					}
+					else if (queryTopDonation[j] == queryTopDonation[j+1]) {
+						if(queryTop[j][0].compareToIgnoreCase(queryTop[j+1][0]) > 0) {
+							int tempSwapDonation = queryTopDonation[j];
+							queryTopDonation[j] = queryTopDonation[j+1];
+							queryTopDonation[j+1] = tempSwapDonation;
+							
+							String tempSwapName = queryTop[j][0];
+							queryTop[j][0] = queryTop[j+1][0];
+							queryTop[j+1][0] = tempSwapName;
+							
+							String tempSwapBirthday = queryTop[j][1];
+							queryTop[j][1] = queryTop[j+1][1];
+							queryTop[j+1][1] = tempSwapBirthday;
+						}
+					}
+				}
+			}
+			reportSb.append("----query top " + n + "----");
+			reportSb.append(System.getProperty("line.separator"));
+			
+			if(n == 1) {
+				reportSb.append(queryTop[0][0] + "; " + queryTop[0][1] + "; " + queryTopDonation[0]);
+				reportSb.append(System.getProperty("line.separator"));
+				reportSb.append("-------------------------");
+				reportSb.append(System.getProperty("line.separator"));
+				reportSb.append(System.getProperty("line.separator"));
+			}
+			
+			else if (n > 1) {
+				reportSb.append(queryTop[0][0] + "; " + queryTop[0][1] + "; " + queryTopDonation[0]);
+				for(int i = 1; i < n; i++) {
+					reportSb.append(System.getProperty("line.separator"));
+					reportSb.append(queryTop[i][0] + "; " + queryTop[i][1] + "; " + queryTopDonation[i]);
+				}
+				reportSb.append(System.getProperty("line.separator"));
+				reportSb.append("-------------------------");
+				reportSb.append(System.getProperty("line.separator"));
+				reportSb.append(System.getProperty("line.separator"));
+			}
 		}
 		
 		else if (temp[1].equalsIgnoreCase("recipients")) {
