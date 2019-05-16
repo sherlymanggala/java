@@ -396,7 +396,62 @@ public class Record {
 		}
 		
 		else if (temp[1].equalsIgnoreCase("recipients")) {
+			ArrayList<String> recipientList = new ArrayList<String>();
+			ArrayList<Integer> donationList = new ArrayList<Integer>();
+			ArrayList<String> postcodeList = new ArrayList<String>();
+			for(int i = 0; i < donator.size(); i++) {
+				if(donator.get(i).getRecipient() != null) {
+					String[] tempRecipient = donator.get(i).getRecipient().split(",");
+					String[] tempD = donator.get(i).getDonation().split(",");
+					int[] tempDonation = new int[tempD.length];
+					for(int j = 0; j < tempRecipient.length; j++) {
+						tempRecipient[j] = tempRecipient[j].trim();
+						tempDonation[j] = Integer.parseInt(tempD[j].trim());
+					}
+					
+					if(recipientList.size() > 0) {
+						for(int j = 0; j < tempRecipient.length; j++) {
+							boolean recipientFound = false;
+							for(int k = 0; k < recipientList.size(); k++) {
+								if(tempRecipient[j].equalsIgnoreCase(recipientList.get(k))) {
+									if(tempDonation[j] > donationList.get(k)) {
+										donationList.set(k, tempDonation[j]);
+										postcodeList.set(k, donator.get(i).getPostcode());
+									}
+									
+									else if (tempDonation[j] == donationList.get(k)) {
+										postcodeList.set(k, postcodeList.get(k) + ", " + donator.get(i).getPostcode());
+									}
+									
+									recipientFound = true;
+								}
+							}
+							
+							if(!recipientFound) {
+								recipientList.add(tempRecipient[j]);
+								donationList.add(tempDonation[j]);
+								postcodeList.add(donator.get(i).getPostcode());
+							}
+						}
+					}
+					else {
+						for(int j = 0; j < tempRecipient.length; j++) {
+							recipientList.add(tempRecipient[j]);
+							donationList.add(tempDonation[j]);
+							postcodeList.add(donator.get(i).getPostcode());
+						}
+					}
+				}
+			}
 			
+			reportSb.append("----query recipients----");
+			reportSb.append(System.getProperty("line.separator"));
+			for(int i = 0; i < recipientList.size(); i++) {
+				//System.out.println(recipientList.get(i) + ": " + donationList.get(i) + "; postcode " + postcodeList.get(i));
+				reportSb.append(recipientList.get(i) + ": " + donationList.get(i) + "; postcode " + postcodeList.get(i));
+				reportSb.append(System.getProperty("line.separator"));
+			}
+			reportSb.append("-------------------------");
 		}
 	}
 	
