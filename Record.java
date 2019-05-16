@@ -139,63 +139,66 @@ public class Record {
 			boolean donatorFound = false;
 			String tempName = temp[0];
 			CustomDate tempBirthday = new CustomDate(temp[1]);
+			
 			for(int i = 2; i < temp.length; i++) {
-				String[] temp2 = temp[i].split(",");
-				String tempRecipient = temp2[0].trim();
-				int tempDonation = Integer.parseInt(temp2[1].trim());
-				
-				// check every donator
-				for(int j = 0; j < donator.size(); j++) {
+				if(!temp[i].equals("")) {
+					String[] temp2 = temp[i].split(",");
+					String tempRecipient = temp2[0].trim();
+					int tempDonation = Integer.parseInt(temp2[1].trim());
 					
-					// check if there's record with the given name and birthday
-					if(donator.get(j).getName().equalsIgnoreCase(tempName)
-							&& donator.get(j).getBirthday().toString().equals(tempBirthday.toString())) {
+					// check every donator
+					for(int j = 0; j < donator.size(); j++) {
 						
-						String recipientStr = "";
-						String donationStr = "";
-						
-						if(donator.get(j).getRecipient() != null) {
-							String[] recipientList = donator.get(j).getRecipient().trim().split(",");
-							String[] donationList = donator.get(j).getDonation().trim().split(",");
-							boolean foundRecipient = false;
+						// check if there's record with the given name and birthday
+						if(donator.get(j).getName().equalsIgnoreCase(tempName)
+								&& donator.get(j).getBirthday().toString().equals(tempBirthday.toString())) {
 							
-							// check for the recipient list
-							for(int k = 0; k < recipientList.length; k++) {
-								if (recipientList[k].trim().equalsIgnoreCase(tempRecipient)) {
-									int donation = Integer.parseInt(donationList[k].trim());
-									donation += tempDonation;
-									donationList[k] = Integer.toString(donation);
-									foundRecipient = true;
-									break;
+							String recipientStr = "";
+							String donationStr = "";
+							
+							if(donator.get(j).getRecipient() != null) {
+								String[] recipientList = donator.get(j).getRecipient().trim().split(",");
+								String[] donationList = donator.get(j).getDonation().trim().split(",");
+								boolean foundRecipient = false;
+								
+								// check for the recipient list
+								for(int k = 0; k < recipientList.length; k++) {
+									if (recipientList[k].trim().equalsIgnoreCase(tempRecipient)) {
+										int donation = Integer.parseInt(donationList[k].trim());
+										donation += tempDonation;
+										donationList[k] = Integer.toString(donation);
+										foundRecipient = true;
+										break;
+									}
+									else {
+										foundRecipient = false;
+									}
 								}
-								else {
-									foundRecipient = false;
+								
+								recipientStr = recipientStr + recipientList[0];
+								donationStr = donationStr + donationList[0];
+								for(int k = 1; k < recipientList.length; k++) {
+									recipientStr = recipientStr + ", " + recipientList[k];
+									donationStr = donationStr + ", " + donationList[k];
+								}
+								
+								// if there's no same recipient as given, add new recipient into the list
+								if(!foundRecipient) {
+									recipientStr = recipientStr + ", " + tempRecipient;
+									donationStr = donationStr + ", " + Integer.toString(tempDonation);
+									count++;
 								}
 							}
-							
-							recipientStr = recipientStr + recipientList[0];
-							donationStr = donationStr + donationList[0];
-							for(int k = 1; k < recipientList.length; k++) {
-								recipientStr = recipientStr + ", " + recipientList[k];
-								donationStr = donationStr + ", " + donationList[k];
-							}
-							
-							// if there's no same recipient as given, add new recipient into the list
-							if(!foundRecipient) {
-								recipientStr = recipientStr + ", " + tempRecipient;
-								donationStr = donationStr + ", " + Integer.toString(tempDonation);
+							else {
 								count++;
+								recipientStr = tempRecipient;
+								donationStr = Integer.toString(tempDonation);
+								donator.get(j).setRecipient(recipientStr);
+								donator.get(j).setDonation(donationStr);
 							}
+							
+							donatorFound = true;
 						}
-						else {
-							count++;
-							recipientStr = tempRecipient;
-							donationStr = Integer.toString(tempDonation);
-							donator.get(j).setRecipient(recipientStr);
-							donator.get(j).setDonation(donationStr);
-						}
-						
-						donatorFound = true;
 					}
 				}
 			}
@@ -237,7 +240,7 @@ public class Record {
 				}
 			}
 			
-			if(count >= 1) {
+			if(count > 0) {
 				reportSb.append(count + " record(s) found:");
 				reportSb.append(System.getProperty("line.separator"));
 				
@@ -247,6 +250,8 @@ public class Record {
 							reportSb.append(donator.get(i).toString());
 							reportSb.append(System.getProperty("line.separator"));
 							reportSb.append("-------------------------");
+							reportSb.append(System.getProperty("line.separator"));
+							reportSb.append(System.getProperty("line.separator"));
 						}
 					}
 				}
@@ -286,13 +291,20 @@ public class Record {
 					
 					for(int i = 0; i < donator.size(); i++) {
 						if(donator.get(i).getName().equalsIgnoreCase(tempName)) {
-							reportSb.append(donator.get(i).toString());
-							reportSb.append(System.getProperty("line.separator"));
-							reportSb.append(System.getProperty("line.separator"));
+							if (i == count) {
+								reportSb.append(System.getProperty("line.separator"));
+								reportSb.append(System.getProperty("line.separator"));
+								reportSb.append(donator.get(i).toString());
+							}
+							else {
+								reportSb.append(donator.get(i).toString());
+							}
 						}
 					}
 					
 					reportSb.append("-------------------------");
+					reportSb.append(System.getProperty("line.separator"));
+					reportSb.append(System.getProperty("line.separator"));
 				}
 			}
 		}
@@ -338,6 +350,8 @@ public class Record {
 						queryTop[j][1] = queryTop[j+1][1];
 						queryTop[j+1][1] = tempSwapBirthday;
 					}
+					
+					// compare donator's name if there are multiple donators have the same amount of donations
 					else if (queryTopDonation[j] == queryTopDonation[j+1]) {
 						if(queryTop[j][0].compareToIgnoreCase(queryTop[j+1][0]) > 0) {
 							int tempSwapDonation = queryTopDonation[j];
@@ -360,10 +374,6 @@ public class Record {
 			
 			if(n == 1) {
 				reportSb.append(queryTop[0][0] + "; " + queryTop[0][1] + "; " + queryTopDonation[0]);
-				reportSb.append(System.getProperty("line.separator"));
-				reportSb.append("-------------------------");
-				reportSb.append(System.getProperty("line.separator"));
-				reportSb.append(System.getProperty("line.separator"));
 			}
 			
 			else if (n > 1) {
@@ -372,11 +382,12 @@ public class Record {
 					reportSb.append(System.getProperty("line.separator"));
 					reportSb.append(queryTop[i][0] + "; " + queryTop[i][1] + "; " + queryTopDonation[i]);
 				}
-				reportSb.append(System.getProperty("line.separator"));
-				reportSb.append("-------------------------");
-				reportSb.append(System.getProperty("line.separator"));
-				reportSb.append(System.getProperty("line.separator"));
 			}
+			
+			reportSb.append(System.getProperty("line.separator"));
+			reportSb.append("-------------------------");
+			reportSb.append(System.getProperty("line.separator"));
+			reportSb.append(System.getProperty("line.separator"));
 		}
 		
 		else if (temp[1].equalsIgnoreCase("recipients")) {
