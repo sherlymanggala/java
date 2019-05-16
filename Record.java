@@ -168,9 +168,6 @@ public class Record {
 										donation += tempDonation;
 										donationList[k] = Integer.toString(donation);
 										foundRecipient = true;
-										
-										System.out.println(tempDonation);
-										System.out.println(donation + "\n");
 									}
 								}
 								
@@ -179,7 +176,6 @@ public class Record {
 								for(int k = 1; k < recipientList.length; k++) {
 									recipientStr = recipientStr + ", " + recipientList[k].trim();
 									donationStr = donationStr + ", " + donationList[k].trim();
-									System.out.println(donationStr);
 								}
 								
 								// if there's no same recipient as given, add new recipient into the list
