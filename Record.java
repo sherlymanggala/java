@@ -214,13 +214,17 @@ public class Record {
 		}
 	}
 	
+	/**
+	 * Query the record method, the method consists 3 main keywords: "top", "name", and "recipients"
+	 * @param s the string that contains keyword and param
+	 */
 	public void queryDonator(String s) {
 		String[] temp = s.split("\\s");
 		for(int i = 0; i < temp.length; i++) {
-			temp[i] = temp[i].trim(); // I sincerely don't know why temp[0] is blank space
+			temp[i] = temp[i].trim();
 		}
 		
-		if(temp[1].equalsIgnoreCase("name")) {
+		if(temp[1].equalsIgnoreCase("name")) { // I sincerely don't know why temp[0] is blank space
 			int count = 0;
 			String tempName = "";
 			tempName = temp[2];
