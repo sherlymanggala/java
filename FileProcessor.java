@@ -84,6 +84,9 @@ public class FileProcessor {
 		}
 	}
 	
+	/**
+	 * read the instruction file
+	 */
 	public void readInstruction() {
 		try {
 			Scanner scan = new Scanner(instructionFile);
@@ -117,6 +120,9 @@ public class FileProcessor {
 		}
 	}
 	
+	/**
+	 * write / save the record list to result file
+	 */
 	public void saveResult() {
 		try {
 			PrintWriter out = new PrintWriter(new FileOutputStream(resultFile));
@@ -127,6 +133,9 @@ public class FileProcessor {
 		}
 	}
 	
+	/**
+	 * write / save the query and report to report file
+	 */
 	public void saveReport() {
 		try {
 			PrintWriter out = new PrintWriter(new FileOutputStream(reportFile));
