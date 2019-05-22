@@ -1,5 +1,10 @@
 package DM19S1;
 
+/** CustomDate Class
+ * A class to check donator's birthday date pattern
+ * @author sherly
+ */
+
 import java.util.*;
 import java.text.*;
 

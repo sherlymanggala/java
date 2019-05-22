@@ -1,13 +1,14 @@
 package DM19S1;
 
-/** Donator Management System (DMS)
- * COMP9103 - Software Development in Java
- * @author Sherly Manggala - sman4740
- * 2019
+/** COMP9103 - Software Development in Java - DM System
+ * Main Class
+ * @author Sherly Manggala
+ * UniKey sman4740
+ * SID 490375332
  */
 
 public class DM {
-	
+
 	/**
 	 * main class, read files, parse instruction, save result and report to files
 	 * @param args read the command line

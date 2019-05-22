@@ -1,5 +1,11 @@
 package DM19S1;
 
+/** Address Class
+ * A class to check the given address
+ * @author sherly
+ *
+ */
+
 public class Address {
 	private String address;
 	
@@ -9,15 +15,12 @@ public class Address {
 	 */
 	public Address(String a) {
 		a = a.trim();
-		String[] temp = a.trim().split(",");
-		if(temp.length == 3) {
-			// check regex if the last address that stored in temp[2] is a state
-			if(temp[2].trim().matches("[a-zA-Z]{3}$")) {
-				address = a;
-			}
-			else {
-				address = "";
-			}
+		
+		if(a.matches(".*[\\s][a-zA-Z]{3}$")) {
+			address = a;
+		}
+		else {
+			address = "";
 		}
 	}
 	
